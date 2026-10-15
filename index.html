@@ -1,21 +1,21 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-AWD3rzqMeM7ORcfsx2U4O610vs/UOLt4fN1iey1vLPY=' 'sha256-ZVpewDXR/Gj4IJxhREecWbb5d66C7iaqmjXy99Gpzms=' 'sha256-hxn5qM0lrP7gKQEkMJl/l73ZxFyCRDh0mDr0beOClOo='; style-src 'unsafe-inline'; img-src blob: data:; media-src blob:; connect-src 'none'; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-AWD3rzqMeM7ORcfsx2U4O610vs/UOLt4fN1iey1vLPY=' 'sha256-ZVpewDXR/Gj4IJxhREecWbb5d66C7iaqmjXy99Gpzms=' 'sha256-tTS/829OyVYjWoInynljNPyaFv3Wd3YoUdRnyb3wik8='; style-src 'unsafe-inline'; img-src blob: data:; media-src blob:; connect-src 'none'; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer"><title>Humanproofing · Face check</title>
 <style>
 :root{font-family:system-ui,-apple-system,sans-serif;color:#eaf2f5;background:#0b171e;color-scheme:dark}*{box-sizing:border-box}body{margin:0}main{max-width:650px;margin:auto;padding:28px 20px 50px}.brand{font-size:13px;letter-spacing:.15em;color:#91d9ce;font-weight:750}h1{font-size:36px;line-height:1.08;margin:18px 0}p,li{line-height:1.55;color:#bacbd4}section{background:#14262f;border:1px solid #30434c;border-radius:20px;padding:22px;margin:20px 0}.tag{font-size:12px;font-weight:750;color:#ffda94}h2{font-size:23px;margin:12px 0}video{width:100%;max-height:400px;object-fit:contain;border-radius:14px;background:#050a0e}button{font:inherit;font-weight:700;min-height:48px;border:0;border-radius:12px;padding:12px 18px;background:#98e8d8;color:#09251f;cursor:pointer;margin:8px 6px 0 0}button.secondary{background:#31464f;color:white}button:disabled{opacity:.45;cursor:default}[hidden]{display:none!important}#status{min-height:52px}#step{font-size:15px;color:#91d9ce}summary{cursor:pointer;font-weight:650}a{color:#a7e6da}.fine{font-size:13px}ol{padding-left:24px}#arrow{font-size:52px;line-height:1.1;color:#98e8d8}progress{width:100%;accent-color:#98e8d8;height:8px}footer{font-size:12px;color:#8aa1ad}
 </style></head><body><main>
-<div class="brand">HUMANPROOFING / PHONE TEST 03</div>
+<div class="brand">HUMANPROOFING / PHONE TEST 04</div>
 <h1>Your face.<br>Your phone.</h1><p>Try a face check without sending your ID or face photo to a server.</p>
 <section><span class="tag">REAL FACE MATCH · EARLY TEST</span><h2 id="heading">Try the face check</h2>
 <p id="status" role="status" aria-live="polite">First, use the rear camera to show the photo on your ID. Then follow the head-turn steps.</p>
-<p id="step">No sign-in pass is issued by this test.</p><div id="arrow" aria-hidden="true"></div><progress id="progress" value="0" max="5" hidden aria-label="Head-turn steps done"></progress>
+<p id="detail" class="fine"></p><p id="step">No sign-in pass is issued by this test.</p><div id="arrow" aria-hidden="true"></div><progress id="progress" value="0" max="5" hidden aria-label="Head-turn steps done"></progress>
 <video id="camera" autoplay muted playsinline hidden></video>
 <div><button id="start">Start face check</button><button id="capture" hidden>Read ID photo</button><button id="ready" hidden>I&#8217;m ready</button><button id="stop" class="secondary" hidden>Stop and clear</button></div>
 </section>
 <section><h2>Before you start</h2><ol><li>Use good light. Keep glare off the ID.</li><li>Point the camera at the ID photo. Keep other faces out of view. You can cover the name and numbers.</li><li>Hold the phone still. Move your nose toward each arrow on the screen.</li></ol><p class="fine">The view is not a mirror. The arrow refers to the picture you see on the screen.</p></section>
 <section><h2>What this test can tell us</h2><p>It looks for a similar face and head movement. It does not check if the ID is real. A photo, replayed video, or changed app may fool it. It is not a 3D scan.</p><p>No account is approved. No human pass is saved.</p><details><summary>How your data stays here</summary><p>The page includes its face models. After it loads, it makes no network requests. Images and face data are used in memory only. The page stops the camera, clears its image buffers, and drops face data at the end or when you leave it.</p><p>The browser controls memory, so this is not a promise of secure memory erasure. The site host still sees the normal page request. We do not use photo uploads, storage, or tracking code.</p></details></section>
-<footer>Build 03 · FaceAPI 1.7.15 · Test settings still need real-phone trials.<details><summary>Open-source credits</summary><pre style="white-space:pre-wrap">MIT License
+<footer>Build 04 · FaceAPI 1.7.15 · Test settings still need real-phone trials.<details><summary>Open-source credits</summary><pre style="white-space:pre-wrap">MIT License
 
 Copyright (c) Vladimir Mandic
 
@@ -5304,7 +5304,7 @@ return a / b;`,aie=`
   ++epoch;clearTimeout(timer);timer=null;stopStream();reference?.fill(0);reference=null;
   frame.getContext('2d').clearRect(0,0,frame.width,frame.height);frame.width=frame.height=0;
   phase='idle';$('capture').hidden=true;$('ready').hidden=true;$('stop').hidden=true;$('start').hidden=false;$('start').disabled=busy;
-  $('progress').hidden=true;$('arrow').textContent='';$('step').textContent='No human pass was issued or saved.';message(title,text);
+  $('progress').hidden=true;$('arrow').textContent='';$('detail').textContent='';$('step').textContent='No human pass was issued or saved.';message(title,text);
  }
  function active(token){return token===epoch&&!document.hidden;}
  async function models(){
@@ -5374,36 +5374,52 @@ return a / b;`,aie=`
  $('ready').addEventListener('click',async()=>{
   if(busy||phase!=='face-ready')return;
   busy=true;phase='face';$('ready').hidden=true;const token=epoch;
-  clearTimeout(timer);timer=setTimeout(()=>{if(active(token))clear('Time is up','Head turns were not completed. Camera stopped and temporary data cleared.');},60000);
+  clearTimeout(timer);
   $('progress').value=0;$('progress').hidden=false;
   try{await turns(token);}catch(issue){error(token,issue);}finally{busy=false;$('start').disabled=false;}
  });
  async function turns(token){
-  const plan=rules.sequence(crypto.getRandomValues(new Uint8Array(1))[0]&1);let step=0,heldAt=null,count=0,badSince=null,badCount=0;
+  const plan=rules.sequence(crypto.getRandomValues(new Uint8Array(1))[0]&1);let step=0,heldAt=null,count=0,badSince=null,badCount=0,shownStep=-1,scans=0;
+  let lastReason='No clear scan finished.',candidate='',candidateAt=0,candidateCount=0;
+  function feedback(text){
+   lastReason=text;
+   if(candidate!==text){candidate=text;candidateAt=performance.now();candidateCount=1;}else ++candidateCount;
+   // Keep brief detection changes from flashing the instructions.
+   if(candidateCount>=2&&performance.now()-candidateAt>=600&&$('status').textContent!==text)$('status').textContent=text;
+  }
   while(active(token)&&step<plan.length){
-   const target=plan[step];$('step').textContent=`Step 2 of 2 · Move ${step+1} of ${plan.length}`;
-   $('arrow').textContent=target==='center'?'●':target==='left'?'←':'→';
-   message(target==='center'?'Look straight ahead':'Turn toward the arrow','Keep your whole face in view. Hold each pose until the next step.');
+   const target=plan[step];
+   if(shownStep!==step){
+    shownStep=step;scans=0;candidate='';candidateCount=0;lastReason='No clear scan finished.';
+    $('step').textContent=`Step 2 of 2 · Move ${step+1} of ${plan.length}`;
+    $('arrow').textContent=target==='center'?'●':target==='left'?'←':'→';
+    message(target==='center'?'Look straight ahead':'Turn toward the arrow','Keep your whole face in view. Hold this pose until the next step.');
+    $('detail').textContent='Checking this view…';
+    clearTimeout(timer);timer=setTimeout(()=>{if(active(token))clear('This step could not finish',`Move ${step+1} of ${plan.length}: ${lastReason} Camera stopped. Temporary data cleared.`);},25000);
+   }
    let results;
    try{
-    results=await detect();if(!active(token))return;
+    const began=performance.now();results=await detect();if(!active(token))return;
+    const scanSeconds=(performance.now()-began)/1000;++scans;
+    if(scanSeconds>8){clear('Face scan is too slow',`One scan took ${scanSeconds.toFixed(1)} seconds. This test is too slow on this phone right now. Camera stopped and temporary data cleared.`);return;}
     if(results.length>1){clear('More than one face','Keep only your face in view. Temporary data cleared.');return;}
     const face=results[0];
     if(!face||!rules.validFace(face,frame.width)){
-     heldAt=null;count=0;badSince=null;badCount=0;$('status').textContent='No clear face yet. Move closer and use good light.';
+     heldAt=null;count=0;badSince=null;badCount=0;feedback('No clear face yet. Move closer and use good light.');
     }else if(!rules.accepts(target,rules.pose(face.landmarks.positions))){
-     heldAt=null;count=0;badSince=null;badCount=0;$('status').textContent='Face seen. Follow the arrow and hold still.';
+     heldAt=null;count=0;badSince=null;badCount=0;feedback(target==='center'?'Face seen. Look straight at the camera and keep your head level.':'Face seen. Turn a little farther toward the arrow. Keep both eyes in view.');
     }else if(rules.distance(reference,face.descriptor)>rules.threshold){
      heldAt=null;count=0;badSince??=performance.now();++badCount;
-     $('status').textContent='Face seen. Still checking the match. Hold still in good light.';
+     feedback('Face seen. Still checking the ID match. Hold still in good light.');
      if(badCount>=8&&performance.now()-badSince>=4000){
       clear('Could not match the faces','Several clear views did not match the ID photo at our test setting. Try a sharper ID photo with less glare. This may be a test error. Temporary data cleared.');return;
      }
     }else if(rules.accepts(target,rules.pose(face.landmarks.positions))){
-     badSince=null;badCount=0;$('status').textContent='Face seen and matching. Keep holding this pose.';
+     badSince=null;badCount=0;feedback('Face seen and matching. Keep holding this pose.');
      heldAt??=performance.now();++count;
      if(count>=(step===0?3:2)&&performance.now()-heldAt>=(step===0?1200:550)){++step;$('progress').value=step;heldAt=null;count=0;}
     }else{heldAt=null;count=0;}
+    $('detail').textContent=`Scan ${scans} · Last scan: ${scanSeconds.toFixed(1)} seconds · Clear views: ${count} of ${shownStep===0?3:2}`;
    }finally{erase(results);}
    if(active(token))await new Promise(r=>setTimeout(r,120));
   }
