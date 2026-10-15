@@ -1,0 +1,57 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-oYKzWFAjvjVjyT8FUeOoxy0hyZ+zBJLII8amqlX7Szo=' 'sha256-MlC0v8HnYbEbJZASr4Yj3JnEVcoV3fHi3wUhqB4jFWI=' 'sha256-SDaHHuA9DIwi0qXoOZWfVxZiSEOcpE4JrS6CBlGigm0='; style-src 'unsafe-inline'; connect-src 'none'; img-src 'none'; media-src blob:; object-src 'none'; base-uri 'none'; form-action 'none'"><title>Humanproofing · Phone test</title><style>
+*{box-sizing:border-box}body{margin:0;background:#edf1ec;color:#172d27;font:16px/1.55 system-ui,sans-serif}main{max-width:1050px;margin:auto;padding:32px 22px}a{color:#244f43}h1{font-size:clamp(29px,5vw,44px);letter-spacing:-1px;line-height:1.1;margin:22px 0 12px}h2{font-size:23px;line-height:1.25}p{color:#486057}.badge{display:inline-block;border-radius:20px;padding:5px 12px;background:#f8e5b9;font-size:12px;font-weight:750;letter-spacing:1px}.grid{display:grid;grid-template-columns:360px 1fr;gap:32px;margin-top:30px;align-items:start}.phone{border:9px solid #223a32;border-radius:36px;background:white;padding:25px 20px;min-height:540px;box-shadow:0 18px 50px #20382f18}.speaker{width:80px;height:6px;background:#223a32;border-radius:20px;margin:0 auto 28px}.oval{height:150px;width:120px;border:2px dashed #86a496;border-radius:50%;margin:18px auto;display:grid;place-items:center;font-size:48px;color:#557a69}.card{background:white;border:1px solid #d8e1d9;border-radius:16px;padding:22px;margin-bottom:18px}button,select{font:inherit;border-radius:9px;padding:11px;border:1px solid #8da497;width:100%;margin-top:8px;min-height:46px}button{cursor:pointer;background:#234f40;color:white;font-weight:650}button.secondary{background:#f2f5f1;color:#254438}button:disabled{opacity:.45;cursor:default}button:focus-visible,a:focus-visible,select:focus-visible{outline:3px solid #c38823;outline-offset:3px}.turns{display:flex;gap:6px}.turns button{font-size:14px;padding:9px 4px}.small{font-size:13px}.status{min-height:65px;font-size:15px}ul{padding-left:20px}li{margin:8px 0}#data{font-size:14px}footer{margin-top:26px;font-size:13px;color:#486057}@media(max-width:720px){main{padding:22px 14px}.grid{grid-template-columns:1fr;gap:22px}.phone{width:100%;max-width:380px;justify-self:center;min-height:510px}}
+</style></head><body><main><a href="#about-test">About this test</a><h1>Try the phone check.</h1><span class="badge">SAMPLE FLOW · OPTIONAL CAMERA</span><p>Walk through the steps with made-up face and ID results. No real person is checked.</p><div class="grid"><section class="phone" aria-label="Phone preview"><div class="speaker"></div><span class="small">HUMANPROOFING / TEST PHONE</span><h2 id="heading">Keep your identity private.</h2><div class="oval" aria-hidden="true" id="face">○</div><p class="status" id="status" role="status" aria-live="polite">Start a sample ID and face check.</p><button id="start">Start sample check</button><div class="turns"><button data-turn="left" disabled>Left</button><button data-turn="center" disabled>Center</button><button data-turn="right" disabled>Right</button></div><button id="finish" disabled>Apply sample result</button><button class="secondary" id="cancel" disabled>Cancel</button></section><section><div class="card"><h2>Test your iPhone camera</h2><p>This only shows the camera. It does not check a face or ID. No recording or upload.</p><video id="camera-video" autoplay muted playsinline hidden style="width:100%;border-radius:12px;transform:scaleX(-1)"></video><button id="camera-start">Start camera preview</button><button id="camera-stop" class="secondary">Stop camera</button><p id="camera-status" role="status">Camera off. Use an HTTPS link in Safari.</p></div><div class="card"><h2>Choose what happens</h2><label for="scenario">Sample face-check result</label><select id="scenario"><option value="pass">Live face + matching ID</option><option value="spoof">Photo or fake face caught</option><option value="mismatch">Face does not match ID</option><option value="missing">No face found</option><option value="multiple">Two faces found</option><option value="error">Face-check tool fails</option></select><button class="secondary" id="timeout">Jump ahead 31 seconds</button><button class="secondary" id="background">Pretend app went to the background</button><p class="small">Follow the requested turns. A wrong turn stops this test. The timer lasts 30 seconds.</p></div><div class="card"><h2>What stays on this test phone?</h2><p id="data"></p><p class="small">The buffers contain made-up numbers. Clearing them tests our flow, not an iPhone camera or face tool.</p></div><div class="card"><h2 id="about-test">What this can tell us</h2><ul><li>Whether the steps work in the right order.</li><li>Whether failed checks stop the flow.</li><li>Whether test buffers clear on exit.</li></ul><p class="small">This cannot test FacePlugin, Apple security, true 3D depth, ID matching accuracy, or fake-video attacks. The separate local face-model test used real model code on eight public images.</p><p>Saved face-model run: 7 of 8 publisher labels matched. One fake was called live. This model is not running in this page.</p></div></section></div><footer>Local Windows browser test. This is not an iPhone simulator, a virtual machine, or a human approval service.</footer></main><script>(function(root){
+ 'use strict';
+ class PhoneFlow {
+  constructor({clock=()=>Date.now(),random=()=>crypto.getRandomValues(new Uint8Array(1))[0]}={}){this.clock=clock;this.random=random;this.reset();}
+  reset(){this.state='ready';this.reason='';this.steps=[];this.index=0;this.deadline=0;this.clear();}
+  clear(){this.buffers?.forEach(b=>b.fill(0));this.buffers=[];}
+  finish(state,reason){this.state=state;this.reason=reason;this.clear();return this.snapshot();}
+  start(){this.reset();this.deadline=this.clock()+30000;this.steps=this.random()%2?['right','left','center']:['left','right','center'];this.buffers=[new Uint8Array([1,2,3]),new Uint8Array([4,5,6])];this.state='turning';return this.snapshot();}
+  active(){if(!['turning','checking'].includes(this.state))return false;if(this.clock()>=this.deadline){this.finish('stopped','Time ran out. Start a new check.');return false;}return true;}
+  tick(){this.active();return this.snapshot();}
+  turn(direction){if(!this.active()||this.state!=='turning')return this.snapshot();if(direction!==this.steps[this.index])return this.finish('stopped','The head turns did not match the request.');this.index++;if(this.index===this.steps.length)this.state='checking';return this.snapshot();}
+  // This takes scripted signals only. It is NEVER a trusted enrollment endpoint.
+  result(signal){if(!this.active()||this.state!=='checking')return this.snapshot();
+   if(!signal||signal.source!=='simulation')return this.finish('stopped','Unknown result source.');
+   if(signal.faceCount!==1)return this.finish('stopped','We need exactly one face.');
+   if(signal.live!==true)return this.finish('stopped','The sample live-face check failed.');
+   if(signal.idMatch!==true)return this.finish('stopped','The sample face did not match the ID.');
+   return this.finish('sample_pass','Sample flow passed. No human pass was issued.');
+  }
+  cancel(){if(['turning','checking'].includes(this.state))this.finish('stopped','Check canceled. Temporary test data cleared.');return this.snapshot();}
+  background(){if(['turning','checking'].includes(this.state))this.finish('stopped','Check stopped when the app left the screen.');return this.snapshot();}
+  snapshot(){return {state:this.state,reason:this.reason,next:this.state==='turning'?this.steps[this.index]:null,completed:this.index,temporaryBuffers:this.buffers.length,simulation:true,credentialIssued:false};}
+ }
+ if(typeof module!=='undefined')module.exports={PhoneFlow};else root.PhoneFlow=PhoneFlow;
+})(globalThis);
+</script><script>'use strict';
+let offset=0;const flow=new PhoneFlow({clock:()=>Date.now()+offset});
+const el=id=>document.getElementById(id);
+function render(){const s=flow.snapshot();el('heading').textContent=s.state==='turning'?'Turn '+s.next+'.':s.state==='checking'?'Check the sample face.':s.state==='sample_pass'?'Sample flow passed.':s.state==='stopped'?'Check stopped.':'Keep your identity private.';el('status').textContent=s.reason||(s.state==='turning'?`Step ${s.completed+1} of 3. Tap the matching direction below.`:s.state==='checking'?'Head turns complete. Apply the chosen sample result.':'Start a sample ID and face check.');el('face').textContent=s.next==='left'?'←':s.next==='right'?'→':'○';document.querySelectorAll('[data-turn]').forEach(b=>b.disabled=s.state!=='turning');el('finish').disabled=s.state!=='checking';el('cancel').disabled=!['turning','checking'].includes(s.state);el('start').textContent=s.state==='ready'?'Start sample check':'Start over';el('data').textContent=`Temporary test buffers: ${s.temporaryBuffers}. Real images: 0. Human passes issued: 0.`;}
+el('start').onclick=()=>{offset=0;flow.start();render();};
+document.querySelectorAll('[data-turn]').forEach(b=>b.onclick=()=>{flow.turn(b.dataset.turn);render();});
+el('cancel').onclick=()=>{flow.cancel();render();};el('timeout').onclick=()=>{offset+=31000;flow.tick();render();};el('background').onclick=()=>{flow.background();render();};
+el('finish').onclick=()=>{const choice=el('scenario').value;flow.result(choice==='error'?null:{source:'simulation',faceCount:choice==='missing'?0:choice==='multiple'?2:1,live:choice!=='spoof',idMatch:choice!=='mismatch'});render();};
+document.addEventListener('visibilitychange',()=>{if(document.hidden){flow.background();render();}});
+window.addEventListener('pagehide',()=>flow.cancel());setInterval(()=>{flow.tick();render();},500);render();
+</script><script>'use strict';
+(()=>{
+ let stream=null,epoch=0;
+ const video=document.getElementById('camera-video'),status=document.getElementById('camera-status'),start=document.getElementById('camera-start');
+ function stop(){epoch++;if(stream)stream.getTracks().forEach(t=>t.stop());stream=null;video.srcObject=null;video.hidden=true;start.disabled=false;status.textContent='Camera off. No video was recorded or uploaded.';}
+ document.getElementById('camera-stop').onclick=stop;
+ start.onclick=async()=>{
+  stop();const request=epoch;start.disabled=true;
+  if(!window.isSecureContext||!navigator.mediaDevices?.getUserMedia){status.textContent='Open this page through an HTTPS link in Safari to test the camera.';start.disabled=false;return;}
+  status.textContent='Waiting for camera permission. You can press Stop at any time.';
+  try{const incoming=await navigator.mediaDevices.getUserMedia({audio:false,video:{facingMode:'user'}});
+   if(request!==epoch||document.hidden){incoming.getTracks().forEach(t=>t.stop());return;}
+   stream=incoming;video.srcObject=stream;video.hidden=false;await video.play();
+   if(request!==epoch)return;
+   status.textContent='Camera preview only. No face check, ID match, recording, or upload.';
+  }catch(e){if(request!==epoch)return;stop();status.textContent=e.name==='NotAllowedError'?'Camera access was not allowed. You can still use the sample check.':'Camera could not start. Try Safari and check camera access.';}
+ };
+ document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();});window.addEventListener('pagehide',stop);
+})();
+</script></body></html>
