@@ -2300,7 +2300,8 @@ async function predictLiveness(session, canvas_id, bbox) {
     const score_arr = softmax(output_tensor['output'].data);
 
 
-    result.push([x1, y1, x2, y2, score_arr[0]]);
+    // Model output is 3 classes: [2D fake (photo/print), real, 3D fake/replay]. Upstream wrongly used index 0.
+    result.push([x1, y1, x2, y2, score_arr[1], score_arr]);
   }
   img.delete();
   return result;

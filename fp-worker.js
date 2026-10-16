@@ -43,7 +43,7 @@ self.onmessage=async({data:m})=>{
     else{
      result.similarity=cosine(reference,feature);feature.fill(0);
      const live=await FacePlugin.predictLiveness(sessions.liveness,frame,found.bbox);
-     result.liveness=live[0]?.[4];
+     result.liveness=live[0]?.[4];result.liveScores=live[0]?.[5]?.map(x=>Math.round(x*100)/100);
     }
     for(const t of Object.values(output[0]))t.data.fill(0);
     for(const l of landmarks)l.fill(0);

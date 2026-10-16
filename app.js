@@ -20,7 +20,7 @@
  async function start(only){
   clear();scanOnly=only;const token=epoch;controls(true);text('heading','Loading FacePlugin');text('status','Keep this page open. The first load needs about 23 MB.');text('step','Models load before the camera opens.');text('detail','');deadline(90000,'The face tools could not finish loading. Check your connection and try again.');
   try{
-   worker=new Worker('fp-worker.js?v=05');
+   worker=new Worker('fp-worker.js?v=06');
    worker.onmessage=({data:r})=>{if(token!==epoch)return;if(r.type==='loading'){text('detail',`Loading ${{detect:'face finder',landmark:'face points',feature:'face match',liveness:'photo check'}[r.name]||'tools'}…`);return;}if(r.id!==pending?.id)return;const p=pending;pending=null;r.type==='error'?p.reject(Error('model')):p.resolve(r);};
    worker.onerror=()=>{if(token===epoch)finish('Face tools could not start','Try reloading this page in Safari. No check passed.');};
    await request('init');if(token!==epoch)return;
@@ -42,10 +42,10 @@
   text('heading',scanOnly?'Looking for your face':'Comparing your face');text('status','Look straight at the camera. Keep the phone still.');$('progress').hidden=false;$('progress').value=0;deadline(30000,'The scan stopped after 30 seconds. Try “Test camera only” to see whether the face reader can find you.');
   try{while(token===epoch&&phase==='scanning'){
    const r=await request(scanOnly?'detect':'face',frame());if(token!==epoch)return;attempts++;
-   const found=r.count===1&&!r.small,match=Number.isFinite(r.similarity)&&r.similarity>=0.5,live=Number.isFinite(r.liveness)&&r.liveness>=0.3;
+   const found=r.count===1&&!r.small,match=Number.isFinite(r.similarity)&&r.similarity>=0.5,live=Number.isFinite(r.liveness)&&r.liveness>=0.5;
    good=(found&&(scanOnly||match&&live))?good+1:0;$('progress').value=good;
-   text('detail',`Scan ${attempts} · ${(r.ms/1000).toFixed(1)} seconds · ${found?'Face found':r.count>1?'More than one face':r.small?'Move closer':'No face found'} · ${good}/3 clear views`);
-   if(good>=3){finish(scanOnly?'Camera test worked':'Sample face check passed',scanOnly?'FacePlugin found a face in three views. This does not prove that the face is live.':'The faces look alike to this test. Its live-face check can be fooled by a photo. This is not proof of a real person.');return;}
+   text('detail',`Scan ${attempts} · ${(r.ms/1000).toFixed(1)} seconds · ${found?'Face found':r.count>1?'More than one face':r.small?'Move closer':'No face found'} · ${good}/3 clear views${scanOnly?'':` · match ${Number.isFinite(r.similarity)?r.similarity.toFixed(2):'–'} · live ${Number.isFinite(r.liveness)?r.liveness.toFixed(2):'–'}`}`);
+   if(good>=3){finish(scanOnly?'Camera test worked':'Sample face check passed',scanOnly?'FacePlugin found a face in three views. This does not prove that the face is live.':'The faces look alike to this test, and its live-face check passed. That check is weak, so this is not proof of a real person.');return;}
    if(attempts>=8&&Date.now()-started>7000&&found&&!scanOnly){text('status',!match?'A face was found, but it does not match well enough yet. Look straight ahead in good light.':'A face was found. The photo check has not passed yet. Keep your face clear and well lit.');}
    await new Promise(r=>setTimeout(r,700));
   }}catch(e){if(token===epoch)finish('Face check stopped','The face tools could not finish this scan. No check passed.');}
